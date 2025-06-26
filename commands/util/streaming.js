@@ -42,10 +42,13 @@ module.exports = {
 			if (!mainMatch) return null;
 			const mainName = mainMatch[1];
 			const mainUrl = mainMatch[2];
+			if (/discord\.gg|discord\.com\/invite/i.test(mainUrl)) return null;
 			const alternatives = [];
 			const altMatches = [...line.matchAll(/\[(\d+)\]\(([^)]+)\)/g)];
 			for (let i = 0; i < altMatches.length; i++) {
-				alternatives.push(`[Alternative ${altMatches[i][1] - 1}](<${altMatches[i][2]}>)`);
+				if (!/discord\.gg|discord\.com\/invite/i.test(altMatches[i][2])) {
+					alternatives.push(`[Alternative ${altMatches[i][1] - 1}](<${altMatches[i][2]}>)`);
+				}
 			}
 			const allLinks = [
 				`[${mainName}](<${mainUrl}>)`,
